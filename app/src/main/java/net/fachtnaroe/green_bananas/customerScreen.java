@@ -11,6 +11,9 @@ import com.google.appinventor.components.runtime.ListView;
 import com.google.appinventor.components.runtime.VerticalScrollArrangement;
 import com.google.appinventor.components.runtime.Web;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class customerScreen extends Form implements HandlesEventDispatching {
     private Label FoodLbl;
     private HorizontalArrangement HarrLbl, HarrAddBtn, HarrBuyBtn, HarrListView;
@@ -72,7 +75,7 @@ public class customerScreen extends Form implements HandlesEventDispatching {
 
     public boolean dispatchEvent(Component component, String componentName, String eventName, Object[] params) {
         if (component.equals(Web)&&eventName.equals("GotText")){
-            Json(String)params[3];
+            Json((String)params[3]);
                 return true;
         }
         if (eventName.equals("Click")) {
@@ -103,9 +106,9 @@ public class customerScreen extends Form implements HandlesEventDispatching {
                 else if ((thisChar == finish)) {
                     String Temp2 = jsonString.substring(e, i);
                     if (!(Temp2.contains("]"))){
-                        if (Temp2.contains("buyerID\":\"" + pID)) {
-                            jsonIsMySon.add(Temp2);
-                        }
+//                        if (Temp2.contains("buyerID\":\"" + pID)) {
+//                            jsonIsMySon.add(Temp2);
+//                        }
                     }
                 }
 
@@ -135,7 +138,7 @@ public class customerScreen extends Form implements HandlesEventDispatching {
             String r3 = r2.replace("oID", "");
             String r4 = r3.replace("tName", "");
             String r5 = r4.replace("seller", "");
-            LST_ThingsO.ElementsFromString(r5);
+//            LST_ThingsO.ElementsFromString(r5);
         }
     }
 }
