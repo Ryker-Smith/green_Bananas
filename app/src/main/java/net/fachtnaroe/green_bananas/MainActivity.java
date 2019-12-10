@@ -27,7 +27,7 @@ import com.google.appinventor.components.runtime.LinearLayout;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
+    //yaiebfuaefuygaerrhyr
 public class MainActivity extends Form implements HandlesEventDispatching {
 
     private LinearLayout lr1;
@@ -192,7 +192,7 @@ public class MainActivity extends Form implements HandlesEventDispatching {
     }
 
     public void sortJsonDeet(Object[] params){
-        String jsonString = (String)params[3];;
+        String jsonString = (String)params[3];
         int sessionIDFirstChar =(jsonString.indexOf("sessionID"))+12;
         int pID_FirstChar = (jsonString.indexOf("pID"))+8;
         SessionId=jsonString.substring(sessionIDFirstChar,sessionIDFirstChar+8);
