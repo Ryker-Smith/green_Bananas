@@ -29,6 +29,7 @@ public class sellerScreen extends Form implements HandlesEventDispatching {
     private VerticalArrangement vertA1;
     private HorizontalArrangement horiA1, horiA2, horiA3, horiA4, horiA5;
     private Notifier Notifier;
+    private String pID=MainActivity.getPID(), Username = MainActivity.getUsername();
 
     protected void $define() {
         vertA1 = new VerticalArrangement(this);
