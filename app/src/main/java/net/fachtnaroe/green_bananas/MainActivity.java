@@ -146,7 +146,6 @@ public class MainActivity extends Form implements HandlesEventDispatching {
     public void loginBtnClick() {
         webLoginConnection.Url(weblogin + username.Text() + webLogin2 + password.Text());
         webLoginConnection.Get();
-        login.Text("Pressed");
 
         if (buyer.Checked()) {
             notifier.LogInfo("OK");
