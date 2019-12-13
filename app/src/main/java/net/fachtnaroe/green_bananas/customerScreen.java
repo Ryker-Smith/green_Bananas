@@ -31,6 +31,7 @@ public class customerScreen extends Form implements HandlesEventDispatching {
         Screen1.Width(Component.LENGTH_FILL_PARENT);
         Screen1.Height(Component.LENGTH_FILL_PARENT);
         Screen1.BackgroundColor(Component.COLOR_ORANGE);
+        Screen1.Image("FDS_PossibleLogo_04.png");
 
         HarrLbl = new HorizontalArrangement(Screen1);
         HarrLbl.Width(Component.LENGTH_FILL_PARENT);
@@ -90,11 +91,6 @@ public class customerScreen extends Form implements HandlesEventDispatching {
 
         }
         return false;
-
-    }
-
-    private void AddtoCartBtn() {
-
 
     }
 
