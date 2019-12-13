@@ -16,12 +16,12 @@ import java.util.List;
 
 public class customerScreen extends Form implements HandlesEventDispatching {
     private Label FoodLbl;
-    private HorizontalArrangement HarrLbl, HarrAddBtn, HarrBuyBtn, HarrList;
+    private HorizontalArrangement HarrLbl, HarrAddBtn, HarrBuyBtn, HarrList, HarrCredit,HarrOrdered;
     private VerticalArrangement Screen1;
     private Button AddtoCartBtn, BuyBtn;
-    private Web Web;
-    private ListView ListView;
-    private String BaseURL = "https://fachtnaroe.net/bananas?";
+    private Web Web, Web_Credit;
+    private ListView ListAvailable, ListOrdered;
+    private String BaseURL = "https://fachtnaroe.net/bananas?",  SessionID = MainActivity.getSessionID(),   pID = MainActivity.getPID();
 //    pID=LoginScreen.getpID(), Username=LoginScreen.getUsername();
 
 
@@ -41,9 +41,9 @@ public class customerScreen extends Form implements HandlesEventDispatching {
 
         HarrList = new HorizontalArrangement(Screen1);
         HarrList.WidthPercent(100);
-        HarrList.HeightPercent(90);
-        ListView = new ListView(HarrList);
-        ListView.HeightPercent(100);
+        HarrList.HeightPercent(70);
+        ListAvailable = new ListView(HarrList);
+        ListAvailable.HeightPercent(100);
 
         Web = new Web(this);
         Web.Url(BaseURL + "sessionID=a1b2c3d4&entity=thing&method=GET");
@@ -64,6 +64,16 @@ public class customerScreen extends Form implements HandlesEventDispatching {
         BuyBtn.Text("Buy");
         BuyBtn.FontSize(14);
         BuyBtn.TextAlignment(Component.ALIGNMENT_CENTER);
+
+        HarrCredit= new HorizontalArrangement(Screen1);
+        HarrCredit.HeightPercent(20);
+        HarrCredit.WidthPercent(100);
+        Web_Credit= new Web(this);
+        Web_Credit.Url(BaseURL+"sessionID="+ SessionID + "&entity=person&method=GET&pID="+ pID);
+        Web_Credit.Get();
+
+
+
 
         EventDispatcher.registerEventForDelegation(this, formName, "Click");
         EventDispatcher.registerEventForDelegation(this, "GotTextEvent", "GotText");
@@ -161,7 +171,7 @@ public class customerScreen extends Form implements HandlesEventDispatching {
         String r7 = r6.replace("tSoldBy", "");
         String r8 = r7.replace("\"", "");
 
-        ListView.ElementsFromString(r8);
+        ListAvailable.ElementsFromString(r8);
         // String y=jsonIsMySon.get(0);
 
 
