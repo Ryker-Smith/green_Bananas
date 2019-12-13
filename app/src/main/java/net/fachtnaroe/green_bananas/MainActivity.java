@@ -47,13 +47,13 @@ public class MainActivity extends Form implements HandlesEventDispatching {
         vsaTheScreen = new VerticalScrollArrangement(this);
         vsaTheScreen.WidthPercent(100);
         vsaTheScreen.HeightPercent(100);
-        vsaTheScreen.Image("");
+        vsaTheScreen.Image("FDS_PossibleLogo_03.png");
 
         title = new Label(vsaTheScreen);
         title.WidthPercent(100);
         title.HeightPercent(20);
         title.Text("Food Delivery Service");
-        title.FontSize(36);
+        title.FontSize(50);
         title.TextAlignment(Component.ALIGNMENT_CENTER);
 
         Harr1 = new HorizontalArrangement(vsaTheScreen);
