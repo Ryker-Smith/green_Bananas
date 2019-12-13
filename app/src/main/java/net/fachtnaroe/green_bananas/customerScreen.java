@@ -25,7 +25,6 @@ public class customerScreen extends Form implements HandlesEventDispatching {
 
 
     protected void $define() {
-
         Screen1 = new VerticalArrangement(this);
         Screen1.Width(Component.LENGTH_FILL_PARENT);
         Screen1.Height(Component.LENGTH_FILL_PARENT);
@@ -48,13 +47,15 @@ public class customerScreen extends Form implements HandlesEventDispatching {
         Web.Url(BaseURL + "sessionID=a1b2c3d4&entity=thing&method=GET");
         Web.Get();
 
-        HarrAddBtn = new HorizontalArrangement(Screen1);
+//  This is an extra feature that we don't need so don't put it in.l
+        /* HarrAddBtn = new HorizontalArrangement(Screen1);
         HarrAddBtn.Width(Component.LENGTH_FILL_PARENT);
         AddtoCartBtn = new Button(HarrAddBtn);
         AddtoCartBtn.Width(Component.LENGTH_FILL_PARENT);
         AddtoCartBtn.Text("Add to Cart");
         AddtoCartBtn.FontSize(14);
         AddtoCartBtn.TextAlignment(Component.ALIGNMENT_CENTER);
+       */
 
         HarrBuyBtn = new HorizontalArrangement(Screen1);
         HarrBuyBtn.Width(Component.LENGTH_FILL_PARENT);
@@ -101,7 +102,7 @@ public class customerScreen extends Form implements HandlesEventDispatching {
 // for loop to sort by pID
         String Temp1 = "";
         //Used https://stackoverflow.com/questions/48449004/java-storing-the-output-of-a-for-loop-into-an-array/48449039 and https://www.w3schools.com/java/java_ref_string.asp
-        List<String> jsonIsMySon = new ArrayList<String>();
+        List<String> jsonIsMySon = new ArrayList<String>;
         char start = '{';
         char finish = '}';
         int e = 0;
@@ -162,9 +163,6 @@ public class customerScreen extends Form implements HandlesEventDispatching {
 
         ListView.ElementsFromString(r8);
         // String y=jsonIsMySon.get(0);
-
-
     }
-
+   // public void
 }
-

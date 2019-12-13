@@ -122,7 +122,7 @@ public class sellerScreen extends Form implements HandlesEventDispatching {
             //webGetThings4Sale.Get();
             //thingsWeSell.ElementsFromString("");
 //            thingsWeSell.SelectionColor(Component.COLOR_RED);
-//            titleFDS.Text("delet");
+//            titleFDS.Text("delete");
             finish();
             startActivity(getIntent());
         }
