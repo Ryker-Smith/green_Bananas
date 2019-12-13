@@ -17,10 +17,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class customerScreen extends Form implements HandlesEventDispatching {
-    private Label FoodLbl;
-    private HorizontalArrangement HarrLbl, HarrAddBtn, HarrBuyBtn, HarrList;
+    private Label FoodLbl, CreditLbl;
+    private HorizontalArrangement HarrLbl,HarrBuyBtn, HarrList;
     private VerticalArrangement Screen1;
-    private Button AddtoCartBtn, BuyBtn;
+    private Button BuyBtn;
     private Web Web;
     private ListView ListView;
     private String BaseURL = "https://fachtnaroe.net/bananas?";
@@ -39,10 +39,16 @@ public class customerScreen extends Form implements HandlesEventDispatching {
         FoodLbl.Text("Food Delivery Service");
         FoodLbl.FontSize(20);
         FoodLbl.TextAlignment(Component.ALIGNMENT_CENTER);
+        FoodLbl.BackgroundColor(Color.parseColor("#005200"));
+        FoodLbl.TextColor(Color.WHITE);
+
+//This is where the Username Label and pID go.
+
+//This is where the "Things Available" Label goes.
 
         HarrList = new HorizontalArrangement(Screen1);
         HarrList.WidthPercent(100);
-        HarrList.HeightPercent(80);
+        HarrList.HeightPercent(70);
         ListView = new ListView(HarrList);
         ListView.HeightPercent(90);
         ListView.BackgroundColor(00000000);
@@ -60,15 +66,21 @@ public class customerScreen extends Form implements HandlesEventDispatching {
         AddtoCartBtn.FontSize(14);
         AddtoCartBtn.TextAlignment(Component.ALIGNMENT_CENTER);
        */
+        HarrBuyBtn = new HorizontalArrangement(HarrBuyBtn);
+        HarrBuyBtn.Width(LENGTH_FILL_PARENT);
+        HarrBuyBtn.HeightPercent(10);
+        CreditLbl= new Label(HarrBuyBtn);
+        CreditLbl.WidthPercent(50);
+        CreditLbl.Text("Credit €");
+        CreditLbl.TextAlignment(ALIGNMENT_NORMAL);
+        CreditLbl.BackgroundColor(00000000);
 
-        HarrBuyBtn = new HorizontalArrangement(Screen1);
-        HarrBuyBtn.Width(Component.LENGTH_FILL_PARENT);
         BuyBtn = new Button(HarrBuyBtn);
-        BuyBtn.Width(Component.LENGTH_FILL_PARENT);
+        BuyBtn.WidthPercent(50);
         BuyBtn.Text("Buy");
         BuyBtn.FontSize(14);
-        BuyBtn.TextAlignment(Component.ALIGNMENT_CENTER);
-     //BuyBtn.Click(ListVie);
+        BuyBtn.TextAlignment(ALIGNMENT_CENTER);
+        BuyBtn.BackgroundColor(00000000);
 
         EventDispatcher.registerEventForDelegation(this, formName, "Click");
         EventDispatcher.registerEventForDelegation(this, "GotTextEvent", "GotText");
@@ -167,7 +179,7 @@ public class customerScreen extends Form implements HandlesEventDispatching {
         String r8 = r7.replace("\"", "");
 
         ListView.ElementsFromString(r8);
-        ListView.SelectionColor(COLOR_GREEN);
+        ListView.SelectionColor((Color.parseColor("#009F00")));
         // String y=jsonIsMySon.get(0);
     }
 
