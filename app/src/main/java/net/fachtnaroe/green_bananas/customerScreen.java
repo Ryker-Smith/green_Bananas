@@ -1,5 +1,7 @@
 package net.fachtnaroe.green_bananas;
 
+import android.graphics.Color;
+
 import com.google.appinventor.components.runtime.Button;
 import com.google.appinventor.components.runtime.Component;
 import com.google.appinventor.components.runtime.EventDispatcher;
@@ -28,12 +30,13 @@ public class customerScreen extends Form implements HandlesEventDispatching {
         Screen1 = new VerticalArrangement(this);
         Screen1.Width(Component.LENGTH_FILL_PARENT);
         Screen1.Height(Component.LENGTH_FILL_PARENT);
+        Screen1.BackgroundColor(Component.COLOR_ORANGE);
 
         HarrLbl = new HorizontalArrangement(Screen1);
         HarrLbl.Width(Component.LENGTH_FILL_PARENT);
         FoodLbl = new Label(HarrLbl);
         FoodLbl.Width(Component.LENGTH_FILL_PARENT);
-        FoodLbl.Text("List of Food");
+        FoodLbl.Text("Food Delivery Service");
         FoodLbl.FontSize(20);
         FoodLbl.TextAlignment(Component.ALIGNMENT_CENTER);
 
@@ -42,6 +45,7 @@ public class customerScreen extends Form implements HandlesEventDispatching {
         HarrList.HeightPercent(80);
         ListView = new ListView(HarrList);
         ListView.HeightPercent(90);
+        ListView.BackgroundColor(00000000);
 
         Web = new Web(this);
         Web.Url(BaseURL + "sessionID=a1b2c3d4&entity=thing&method=GET");
@@ -64,6 +68,7 @@ public class customerScreen extends Form implements HandlesEventDispatching {
         BuyBtn.Text("Buy");
         BuyBtn.FontSize(14);
         BuyBtn.TextAlignment(Component.ALIGNMENT_CENTER);
+     //BuyBtn.Click(ListVie);
 
         EventDispatcher.registerEventForDelegation(this, formName, "Click");
         EventDispatcher.registerEventForDelegation(this, "GotTextEvent", "GotText");
@@ -77,8 +82,8 @@ public class customerScreen extends Form implements HandlesEventDispatching {
         }
 
         if (eventName.equals("Click")) {
-            if (component.equals(AddtoCartBtn)) {
-                AddtoCartBtn();
+            if (component.equals(BuyBtn)) {
+                BuyBtn();
                 return true;
 
             }
@@ -102,7 +107,7 @@ public class customerScreen extends Form implements HandlesEventDispatching {
 // for loop to sort by pID
         String Temp1 = "";
         //Used https://stackoverflow.com/questions/48449004/java-storing-the-output-of-a-for-loop-into-an-array/48449039 and https://www.w3schools.com/java/java_ref_string.asp
-        List<String> jsonIsMySon = new ArrayList<String>;
+        List<String> jsonIsMySon = new ArrayList<String>();
         char start = '{';
         char finish = '}';
         int e = 0;
@@ -162,7 +167,8 @@ public class customerScreen extends Form implements HandlesEventDispatching {
         String r8 = r7.replace("\"", "");
 
         ListView.ElementsFromString(r8);
+        ListView.SelectionColor(COLOR_GREEN);
         // String y=jsonIsMySon.get(0);
     }
-   // public void
+
 }
