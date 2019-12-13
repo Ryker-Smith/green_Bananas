@@ -72,11 +72,11 @@ public class MainActivity extends Form implements HandlesEventDispatching {
         PasswL.WidthPercent(20);
         PasswL.Text("Password");
         password = new PasswordTextBox(Harr2);
-        password.WidthPercent(70);
+        password.Width(Component.LENGTH_FILL_PARENT);
         password.Text("tcfetcfe");
 
         debugLabel = new Label(vsaTheScreen);
-        debugLabel.WidthPercent(100);
+        debugLabel.Width(Component.LENGTH_FILL_PARENT);
         debugLabel.HeightPercent(10);
         debugLabel.Text();
 
@@ -90,12 +90,14 @@ public class MainActivity extends Form implements HandlesEventDispatching {
         Harr3.AlignHorizontal(Component.ALIGNMENT_CENTER);
         buyer = new CheckBox(Harr3);
         buyer.Text("Buyer");
-        buyer.WidthPercent(LENGTH_FILL_PARENT);
+        buyer.Width(Component.LENGTH_FILL_PARENT);
         buyer.FontBold(true);
+        buyer.Checked(true);
         seller = new CheckBox(Harr3);
         seller.Text("Seller");
         seller.FontBold(true);
-        seller.WidthPercent(LENGTH_FILL_PARENT);
+        seller.Width(Component.LENGTH_FILL_PARENT);
+        seller.Checked(false);
 
         login = new Button(vsaTheScreen);
         login.Width(Component.LENGTH_FILL_PARENT);
