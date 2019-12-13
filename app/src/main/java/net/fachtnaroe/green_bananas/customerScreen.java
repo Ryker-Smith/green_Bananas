@@ -17,8 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class customerScreen extends Form implements HandlesEventDispatching {
-    private Label FoodLbl, CreditLbl;
-    private HorizontalArrangement HarrLbl,HarrBuyBtn, HarrList;
+    private Label FoodLbl, CreditLbl, AvaFood, UserLbl, pIDLbl;
+    private HorizontalArrangement HarrLbl,HarrBuyBtn, HarrList, HarrUser;
     private VerticalArrangement Screen1;
     private Button BuyBtn;
     private Web Web;
@@ -43,15 +43,39 @@ public class customerScreen extends Form implements HandlesEventDispatching {
         FoodLbl.BackgroundColor(Color.parseColor("#005200"));
         FoodLbl.TextColor(Color.WHITE);
 
-//This is where the Username Label and pID go.
+        HarrUser=new HorizontalArrangement(Screen1);
+        HarrUser.WidthPercent(100);
+        HarrUser.HeightPercent(5);
+        HarrUser.BackgroundColor(00000000);
+        UserLbl=new Label(HarrUser);
+        UserLbl.WidthPercent(50);
+        UserLbl.TextColor(COLOR_BLACK);
+        UserLbl.Text("Username");
+        UserLbl.FontSize(14);
+        UserLbl.BackgroundColor(00000000);
 
-//This is where the "Things Available" Label goes.
+        pIDLbl=new Label(HarrUser);
+        pIDLbl.Text("pID 15  "); //The reason there is 2 spaces after the "pID 15" is for it to fit on the screen.
+        pIDLbl.FontSize(14);
+        pIDLbl.TextColor(COLOR_BLACK);
+        pIDLbl.TextAlignment(ALIGNMENT_OPPOSITE);
+        pIDLbl.WidthPercent(50);
+        pIDLbl.BackgroundColor(00000000);
+
+        AvaFood = new Label(Screen1);
+        AvaFood.WidthPercent(100);
+        AvaFood.HeightPercent(3);
+        AvaFood.Text("Things Available to order");
+        AvaFood.TextAlignment(ALIGNMENT_NORMAL);
+        AvaFood.BackgroundColor((Color.parseColor("#005200")));
+        AvaFood.TextColor(Color.WHITE);
+        AvaFood.FontSize(12);
 
         HarrList = new HorizontalArrangement(Screen1);
         HarrList.WidthPercent(100);
-        HarrList.HeightPercent(70);
+        HarrList.HeightPercent(50);
         ListView = new ListView(HarrList);
-        ListView.HeightPercent(90);
+        ListView.HeightPercent(100);
         ListView.BackgroundColor(00000000);
 
         Web = new Web(this);
@@ -64,6 +88,7 @@ public class customerScreen extends Form implements HandlesEventDispatching {
         CreditLbl= new Label(HarrBuyBtn);
         CreditLbl.WidthPercent(50);
         CreditLbl.Text("Credit €");
+        CreditLbl.FontSize(20);
         CreditLbl.TextAlignment(ALIGNMENT_NORMAL);
         CreditLbl.BackgroundColor(00000000);
 
@@ -166,6 +191,8 @@ public class customerScreen extends Form implements HandlesEventDispatching {
         String r8 = r7.replace("\"", "");
 
         ListView.ElementsFromString(r8);
+        ListView.TextColor(COLOR_BLACK);
+        ListView.TextSize(20);
         ListView.SelectionColor((Color.parseColor("#009F00")));
         // String y=jsonIsMySon.get(0);
     }
