@@ -110,7 +110,7 @@ public class sellerScreen extends Form implements HandlesEventDispatching {
         }
     }*/
 
-    public void deletThis(String selection){
+    public void deleteThis(String selection){
         if((sellList.Selection().isEmpty())) {
             GotTextNotifier.ShowAlert("No Item Selected");
         }
