@@ -58,16 +58,7 @@ public class customerScreen extends Form implements HandlesEventDispatching {
         Web.Url(BaseURL + "sessionID=a1b2c3d4&entity=thing&method=GET");
         Web.Get();
 
-//  This is an extra feature that we don't need so don't put it in.l
-        /* HarrAddBtn = new HorizontalArrangement(Screen1);
-        HarrAddBtn.Width(Component.LENGTH_FILL_PARENT);
-        AddtoCartBtn = new Button(HarrAddBtn);
-        AddtoCartBtn.Width(Component.LENGTH_FILL_PARENT);
-        AddtoCartBtn.Text("Add to Cart");
-        AddtoCartBtn.FontSize(14);
-        AddtoCartBtn.TextAlignment(Component.ALIGNMENT_CENTER);
-       */
-        HarrBuyBtn = new HorizontalArrangement(HarrBuyBtn);
+        HarrBuyBtn = new HorizontalArrangement(Screen1);
         HarrBuyBtn.Width(LENGTH_FILL_PARENT);
         HarrBuyBtn.HeightPercent(10);
         CreditLbl= new Label(HarrBuyBtn);
