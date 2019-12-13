@@ -47,7 +47,7 @@ public class MainActivity extends Form implements HandlesEventDispatching {
         vsaTheScreen = new VerticalScrollArrangement(this);
         vsaTheScreen.WidthPercent(100);
         vsaTheScreen.HeightPercent(100);
-        vsaTheScreen.Image("FDS_PossibleLogo_04.png");
+        vsaTheScreen.Image("");
 
         title = new Label(vsaTheScreen);
         title.WidthPercent(100);
