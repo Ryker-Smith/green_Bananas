@@ -159,13 +159,17 @@ public class MainActivity extends Form implements HandlesEventDispatching {
     }
 
     public void openBuyer() {
-        switchFormWithStartValue("MainActivity", null);
-        switchForm("customerScreen");
+        //switchFormWithStartValue("MainActivity", null);
+        //switchForm("customerScreen");
+        Intent i = new Intent(getApplicationContext(),customerScreen.class);
+        startActivity(i);
     }
 
     public void openSeller() {
-        switchFormWithStartValue("MainActivity", null);
-        switchForm("sellerScreen");
+        //switchFormWithStartValue("MainActivity", null);
+        //switchForm("sellerScreen");
+        Intent i = new Intent(getApplicationContext(),sellerScreen.class);
+        startActivity(i);
     }
 
     public void loginResult(Object[] params) {

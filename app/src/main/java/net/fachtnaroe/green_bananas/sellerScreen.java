@@ -25,10 +25,21 @@ import com.google.appinventor.components.runtime.ListView;
 public class sellerScreen extends Form implements HandlesEventDispatching {
     private Label ProdNLbl, ProdDesLbl, PriceLbl, SellerNLbl;
     private TextBox ProdNTbx, ProdDesTbx, PriceTbx, SellerNTbx;
-    private Button SellBtn;
+    private Button SellBtn, deleteBtn;
     private VerticalArrangement vertA1;
     private HorizontalArrangement horiA1, horiA2, horiA3, horiA4, horiA5;
     private Notifier Notifier;
+    private ListView sellList;
+    private String baseURL ="https://fachtnaroe.net/bananas?",
+            TheUsername=MainActivity.getUsername(),
+            pID =MainActivity.getPID(),
+            SessionID=MainActivity.getSessionID(),
+            getThingsForSaleURL =baseURL+"sessionID="+SessionID+"&entity=thing&method=GET",
+            getThingsSoldURL=baseURL+"sessionID="+SessionID+"&entity=orders2&method=GET",
+            webThingDeletURL=baseURL+"sessionID="+SessionID+"&entity=thing&method=DELETE&tID=",
+            webOrderIsCompleteURL=baseURL+"sessionID="+SessionID+"&entity=orders&method=DELETE&oID=";
+    private Web webGetThings4Sale,webGetThingsSold,webThingDelete,webOrderIsComplete;
+    private Notifier  GotTextNotifier;
 
     protected void $define() {
         vertA1 = new VerticalArrangement(this);
@@ -75,8 +86,17 @@ public class sellerScreen extends Form implements HandlesEventDispatching {
         horiA5.HeightPercent(10);
         SellBtn = new Button(horiA5);
         SellBtn.Text("Sell");
-        SellBtn.WidthPercent(100);
+        SellBtn.WidthPercent(50);
         SellBtn.HeightPercent(10);
+
+        deleteBtn = new Button(horiA5);
+        deleteBtn.WidthPercent(50);
+        deleteBtn.HeightPercent(10);
+        deleteBtn.Text("Remove");
+
+        sellList = new ListView(vertA1);
+        sellList.WidthPercent(100);
+        sellList.HeightPercent(100);
     }
 // Test for GIT
     /*public static class MyClass {
@@ -89,4 +109,22 @@ public class sellerScreen extends Form implements HandlesEventDispatching {
             System.out.println(food);
         }
     }*/
+
+    public void deleteThis(String selection){
+        if((sellList.Selection().isEmpty())) {
+            GotTextNotifier.ShowAlert("No Item Selected");
+        }
+        else {
+            String tIDForURL = selection.substring(1, 3);
+            webThingDelete.Url(webThingDeletURL+tIDForURL);
+            webThingDelete.Get();
+            GotTextNotifier.ShowAlert("Item "+tIDForURL+" removed");
+            //webGetThings4Sale.Get();
+            //thingsWeSell.ElementsFromString("");
+//            thingsWeSell.SelectionColor(Component.COLOR_RED);
+//            titleFDS.Text("delet");
+            finish();
+            startActivity(getIntent());
+        }
+    }
 }
