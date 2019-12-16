@@ -17,21 +17,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class customerScreen extends Form implements HandlesEventDispatching {
-    private Label FoodLbl, CreditLbl, AvaFood, UserLbl, pIDLbl;
+    private Label FoodLbl, CreditLbl, AvaFood, UserLbl, pIDLbl, ThingOrder;
     private HorizontalArrangement HarrLbl,HarrBuyBtn, HarrList, HarrUser;
     private VerticalArrangement Screen1;
     private Button BuyBtn;
     private Web Web;
-    private ListView ListView;
+    private ListView ListView, ListView2;
     private String BaseURL = "https://fachtnaroe.net/bananas?";
 
 
     protected void $define() {
         Screen1 = new VerticalArrangement(this);
+        this.BackgroundColor(COLOR_ORANGE);
         Screen1.Width(Component.LENGTH_FILL_PARENT);
         Screen1.Height(Component.LENGTH_FILL_PARENT);
         Screen1.BackgroundColor(Component.COLOR_ORANGE);
-        Screen1.Image("FDS_PossibleLogo_04.png");
+        Screen1.Image("FDS_PossibleLogo_03.png");
 
         HarrLbl = new HorizontalArrangement(Screen1);
         HarrLbl.Width(Component.LENGTH_FILL_PARENT);
@@ -98,6 +99,20 @@ public class customerScreen extends Form implements HandlesEventDispatching {
         BuyBtn.FontSize(14);
         BuyBtn.TextAlignment(ALIGNMENT_CENTER);
         BuyBtn.BackgroundColor(00000000);
+
+        ThingOrder= new Label (Screen1);
+        ThingOrder.WidthPercent(100);
+        ThingOrder. HeightPercent(3);
+        ThingOrder.Text("Things I've ordered");
+        ThingOrder.FontSize(12);
+        ThingOrder.TextAlignment(ALIGNMENT_NORMAL);
+        ThingOrder.BackgroundColor((Color.parseColor("#005200")));
+        ThingOrder.TextColor(Color.WHITE);
+
+        ListView2= new ListView(Screen1);
+        ListView2.WidthPercent(100);
+        ListView2.HeightPercent(100);
+        ListView2.BackgroundColor(00000000);
 
         EventDispatcher.registerEventForDelegation(this, formName, "Click");
         EventDispatcher.registerEventForDelegation(this, "GotTextEvent", "GotText");
