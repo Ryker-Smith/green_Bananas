@@ -18,7 +18,7 @@ import java.util.List;
 
 public class customerScreen extends Form implements HandlesEventDispatching {
     private Label FoodLbl, CreditLbl, AvaFood, UserLbl, pIDLbl, ThingOrder;
-    private HorizontalArrangement HarrLbl,HarrBuyBtn, HarrList, HarrUser;
+    private HorizontalArrangement HarrLbl, HarrBuyBtn, HarrList, HarrUser;
     private VerticalArrangement Screen1;
     private Button BuyBtn;
     private Web Web;
@@ -44,18 +44,18 @@ public class customerScreen extends Form implements HandlesEventDispatching {
         FoodLbl.BackgroundColor(Color.parseColor("#005200"));
         FoodLbl.TextColor(Color.WHITE);
 
-        HarrUser=new HorizontalArrangement(Screen1);
+        HarrUser = new HorizontalArrangement(Screen1);
         HarrUser.WidthPercent(100);
         HarrUser.HeightPercent(5);
         HarrUser.BackgroundColor(00000000);
-        UserLbl=new Label(HarrUser);
+        UserLbl = new Label(HarrUser);
         UserLbl.WidthPercent(50);
         UserLbl.TextColor(COLOR_BLACK);
         UserLbl.Text("Username");
         UserLbl.FontSize(14);
         UserLbl.BackgroundColor(00000000);
 
-        pIDLbl=new Label(HarrUser);
+        pIDLbl = new Label(HarrUser);
         pIDLbl.Text("pID 15  "); //The reason there is 2 spaces after the "pID 15" is for it to fit on the screen.
         pIDLbl.FontSize(14);
         pIDLbl.TextColor(COLOR_BLACK);
@@ -86,7 +86,7 @@ public class customerScreen extends Form implements HandlesEventDispatching {
         HarrBuyBtn = new HorizontalArrangement(Screen1);
         HarrBuyBtn.Width(LENGTH_FILL_PARENT);
         HarrBuyBtn.HeightPercent(10);
-        CreditLbl= new Label(HarrBuyBtn);
+        CreditLbl = new Label(HarrBuyBtn);
         CreditLbl.WidthPercent(50);
         CreditLbl.Text("Credit €");
         CreditLbl.FontSize(20);
@@ -100,16 +100,16 @@ public class customerScreen extends Form implements HandlesEventDispatching {
         BuyBtn.TextAlignment(ALIGNMENT_CENTER);
         BuyBtn.BackgroundColor(00000000);
 
-        ThingOrder= new Label (Screen1);
+        ThingOrder = new Label(Screen1);
         ThingOrder.WidthPercent(100);
-        ThingOrder. HeightPercent(3);
+        ThingOrder.HeightPercent(3);
         ThingOrder.Text("Things I've ordered");
         ThingOrder.FontSize(12);
         ThingOrder.TextAlignment(ALIGNMENT_NORMAL);
         ThingOrder.BackgroundColor((Color.parseColor("#005200")));
         ThingOrder.TextColor(Color.WHITE);
 
-        ListView2= new ListView(Screen1);
+        ListView2 = new ListView(Screen1);
         ListView2.WidthPercent(100);
         ListView2.HeightPercent(100);
         ListView2.BackgroundColor(00000000);
@@ -210,6 +210,12 @@ public class customerScreen extends Form implements HandlesEventDispatching {
         ListView.TextSize(20);
         ListView.SelectionColor((Color.parseColor("#009F00")));
         // String y=jsonIsMySon.get(0);
-    }
 
+
+
+            ListView2.ElementsFromString(r8);
+            ListView2.TextColor(COLOR_BLACK);
+            ListView2.TextSize(20);
+            ListView2.SelectionColor((Color.parseColor("#009F00")));
+    }
 }
