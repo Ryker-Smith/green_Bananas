@@ -1,5 +1,7 @@
 package net.fachtnaroe.green_bananas;
 
+import android.graphics.Color;
+
 import com.google.appinventor.components.runtime.Button;
 import com.google.appinventor.components.runtime.Component;
 import com.google.appinventor.components.runtime.EventDispatcher;
@@ -15,54 +17,87 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class customerScreen extends Form implements HandlesEventDispatching {
-    private Label FoodLbl;
-    private HorizontalArrangement HarrLbl, HarrAddBtn, HarrBuyBtn, HarrList;
+    private Label FoodLbl, CreditLbl, AvaFood, UserLbl, pIDLbl;
+    private HorizontalArrangement HarrLbl,HarrBuyBtn, HarrList, HarrUser;
     private VerticalArrangement Screen1;
-    private Button AddtoCartBtn, BuyBtn;
+    private Button BuyBtn;
     private Web Web;
     private ListView ListView;
     private String BaseURL = "https://fachtnaroe.net/bananas?";
 
 
     protected void $define() {
-
         Screen1 = new VerticalArrangement(this);
         Screen1.Width(Component.LENGTH_FILL_PARENT);
         Screen1.Height(Component.LENGTH_FILL_PARENT);
+        Screen1.BackgroundColor(Component.COLOR_ORANGE);
+        Screen1.Image("FDS_PossibleLogo_04.png");
 
         HarrLbl = new HorizontalArrangement(Screen1);
         HarrLbl.Width(Component.LENGTH_FILL_PARENT);
         FoodLbl = new Label(HarrLbl);
         FoodLbl.Width(Component.LENGTH_FILL_PARENT);
-        FoodLbl.Text("List of Food");
+        FoodLbl.Text("Food Delivery Service");
         FoodLbl.FontSize(20);
         FoodLbl.TextAlignment(Component.ALIGNMENT_CENTER);
+        FoodLbl.BackgroundColor(Color.parseColor("#005200"));
+        FoodLbl.TextColor(Color.WHITE);
+
+        HarrUser=new HorizontalArrangement(Screen1);
+        HarrUser.WidthPercent(100);
+        HarrUser.HeightPercent(5);
+        HarrUser.BackgroundColor(00000000);
+        UserLbl=new Label(HarrUser);
+        UserLbl.WidthPercent(50);
+        UserLbl.TextColor(COLOR_BLACK);
+        UserLbl.Text("Username");
+        UserLbl.FontSize(14);
+        UserLbl.BackgroundColor(00000000);
+
+        pIDLbl=new Label(HarrUser);
+        pIDLbl.Text("pID 15  "); //The reason there is 2 spaces after the "pID 15" is for it to fit on the screen.
+        pIDLbl.FontSize(14);
+        pIDLbl.TextColor(COLOR_BLACK);
+        pIDLbl.TextAlignment(ALIGNMENT_OPPOSITE);
+        pIDLbl.WidthPercent(50);
+        pIDLbl.BackgroundColor(00000000);
+
+        AvaFood = new Label(Screen1);
+        AvaFood.WidthPercent(100);
+        AvaFood.HeightPercent(3);
+        AvaFood.Text("Things Available to order");
+        AvaFood.TextAlignment(ALIGNMENT_NORMAL);
+        AvaFood.BackgroundColor((Color.parseColor("#005200")));
+        AvaFood.TextColor(Color.WHITE);
+        AvaFood.FontSize(12);
 
         HarrList = new HorizontalArrangement(Screen1);
         HarrList.WidthPercent(100);
-        HarrList.HeightPercent(80);
+        HarrList.HeightPercent(50);
         ListView = new ListView(HarrList);
-        ListView.HeightPercent(90);
+        ListView.HeightPercent(100);
+        ListView.BackgroundColor(00000000);
 
         Web = new Web(this);
         Web.Url(BaseURL + "sessionID=a1b2c3d4&entity=thing&method=GET");
         Web.Get();
 
-        HarrAddBtn = new HorizontalArrangement(Screen1);
-        HarrAddBtn.Width(Component.LENGTH_FILL_PARENT);
-        AddtoCartBtn = new Button(HarrAddBtn);
-        AddtoCartBtn.Width(Component.LENGTH_FILL_PARENT);
-        AddtoCartBtn.Text("Add to Cart");
-        AddtoCartBtn.FontSize(14);
-        AddtoCartBtn.TextAlignment(Component.ALIGNMENT_CENTER);
-
         HarrBuyBtn = new HorizontalArrangement(Screen1);
-        HarrBuyBtn.Width(Component.LENGTH_FILL_PARENT);
+        HarrBuyBtn.Width(LENGTH_FILL_PARENT);
+        HarrBuyBtn.HeightPercent(10);
+        CreditLbl= new Label(HarrBuyBtn);
+        CreditLbl.WidthPercent(50);
+        CreditLbl.Text("Credit €");
+        CreditLbl.FontSize(20);
+        CreditLbl.TextAlignment(ALIGNMENT_NORMAL);
+        CreditLbl.BackgroundColor(00000000);
+
         BuyBtn = new Button(HarrBuyBtn);
-        BuyBtn.Width(Component.LENGTH_FILL_PARENT);
+        BuyBtn.WidthPercent(50);
         BuyBtn.Text("Buy");
         BuyBtn.FontSize(14);
-        BuyBtn.TextAlignment(Component.ALIGNMENT_CENTER);
+        BuyBtn.TextAlignment(ALIGNMENT_CENTER);
+        BuyBtn.BackgroundColor(00000000);
 
         EventDispatcher.registerEventForDelegation(this, formName, "Click");
         EventDispatcher.registerEventForDelegation(this, "GotTextEvent", "GotText");
@@ -76,19 +111,14 @@ public class customerScreen extends Form implements HandlesEventDispatching {
         }
 
         if (eventName.equals("Click")) {
-            if (component.equals(AddtoCartBtn)) {
-                AddtoCartBtn();
+            if (component.equals(BuyBtn)) {
+                BuyBtn();
                 return true;
 
             }
 
         }
         return false;
-
-    }
-
-    private void AddtoCartBtn() {
-
 
     }
 
@@ -161,10 +191,10 @@ public class customerScreen extends Form implements HandlesEventDispatching {
         String r8 = r7.replace("\"", "");
 
         ListView.ElementsFromString(r8);
+        ListView.TextColor(COLOR_BLACK);
+        ListView.TextSize(20);
+        ListView.SelectionColor((Color.parseColor("#009F00")));
         // String y=jsonIsMySon.get(0);
-
-
     }
 
 }
-
