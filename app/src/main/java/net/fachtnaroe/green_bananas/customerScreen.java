@@ -1,6 +1,7 @@
 package net.fachtnaroe.green_bananas;
 
 import android.graphics.Color;
+import android.util.Log;
 
 import com.google.appinventor.components.runtime.Button;
 import com.google.appinventor.components.runtime.Component;
@@ -10,8 +11,14 @@ import com.google.appinventor.components.runtime.HandlesEventDispatching;
 import com.google.appinventor.components.runtime.HorizontalArrangement;
 import com.google.appinventor.components.runtime.Label;
 import com.google.appinventor.components.runtime.ListView;
+import com.google.appinventor.components.runtime.Notifier;
 import com.google.appinventor.components.runtime.VerticalArrangement;
 import com.google.appinventor.components.runtime.Web;
+import com.google.appinventor.components.runtime.util.YailList;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,9 +28,12 @@ public class customerScreen extends Form implements HandlesEventDispatching {
     private HorizontalArrangement HarrLbl, HarrBuyBtn, HarrList, HarrUser;
     private VerticalArrangement Screen1;
     private Button BuyBtn;
-    private Web Web;
+    private Web Web, Web2;
     private ListView ListView, ListView2;
-    private String BaseURL = "https://fachtnaroe.net/bananas?";
+    private String BaseURL = "https://fachtnaroe.net/bananas?",
+            pID=MainActivity.getPID(),
+            username=MainActivity.getUsername();
+    private Notifier notifier;
 
 
     protected void $define() {
@@ -51,12 +61,12 @@ public class customerScreen extends Form implements HandlesEventDispatching {
         UserLbl = new Label(HarrUser);
         UserLbl.WidthPercent(50);
         UserLbl.TextColor(COLOR_BLACK);
-        UserLbl.Text("Username");
+        UserLbl.Text("Username "+ username);
         UserLbl.FontSize(14);
         UserLbl.BackgroundColor(00000000);
 
         pIDLbl = new Label(HarrUser);
-        pIDLbl.Text("pID 15  "); //The reason there is 2 spaces after the "pID 15" is for it to fit on the screen.
+        pIDLbl.Text("pID "+pID);
         pIDLbl.FontSize(14);
         pIDLbl.TextColor(COLOR_BLACK);
         pIDLbl.TextAlignment(ALIGNMENT_OPPOSITE);
@@ -77,11 +87,17 @@ public class customerScreen extends Form implements HandlesEventDispatching {
         HarrList.HeightPercent(50);
         ListView = new ListView(HarrList);
         ListView.HeightPercent(100);
+        ListView.Width(Component.LENGTH_FILL_PARENT);
         ListView.BackgroundColor(00000000);
+        ListView.TextColor(COLOR_BLACK);
+        ListView.SelectionColor(Color.parseColor("#009F00"));
 
         Web = new Web(this);
         Web.Url(BaseURL + "sessionID=a1b2c3d4&entity=thing&method=GET");
         Web.Get();
+        Web2 = new Web(this);
+        Web2.Url(BaseURL + "sessionID=a1b2c3d4&entity=prettyorders&method=GET");
+        Web2.Get();
 
         HarrBuyBtn = new HorizontalArrangement(Screen1);
         HarrBuyBtn.Width(LENGTH_FILL_PARENT);
@@ -112,110 +128,89 @@ public class customerScreen extends Form implements HandlesEventDispatching {
         ListView2 = new ListView(Screen1);
         ListView2.WidthPercent(100);
         ListView2.HeightPercent(100);
-        ListView2.BackgroundColor(00000000);
+        ListView2.BackgroundColor(COLOR_WHITE);
+        ListView2.TextColor(COLOR_BLACK);
+        ListView2.SelectionColor(Color.parseColor("#009F00"));
 
         EventDispatcher.registerEventForDelegation(this, formName, "Click");
+//        EventDispatcher.registerEventForDelegation(this, formName,eventName "Initilize");
         EventDispatcher.registerEventForDelegation(this, "GotTextEvent", "GotText");
     }
 
     public boolean dispatchEvent(Component component, String componentName, String eventName, Object[] params) {
-        if (component.equals(Web) && eventName.equals("GotText")) {
-            JsonSortThingsListView((String) params[3]);
-            // ListView.ElementsFromString((String)params[3]);
-            return true;
-        }
 
+        if (eventName.equals("GotText")){
+            if (component.equals(Web)) {
+                Log.w("Check L8r",(String)params[3]);
+                //calling the procedure For the ListView containing the Items that are available to buy
+                jsonSortAndListViewForBuyerScreen(params[1].toString(), (String) params[3],"thing", "null");
+                //calling the procedure For the ListView containing the Items that the buyer has ordered
+                return true;
+           }
+//            if (component.equals(Web2)) {
+//                //calling the procedure For the ListView containing the Items that the buyer has ordered
+//                jsonSortAndListViewForBuyerScreen(params[1].toString(), (String) params[3],"prettyorders", "buyerID");
+//                //JsonSortThingsListView((String) params[3]);
+//                //ListView.ElementsFromString((String)params[3]);
+//                return true;
+//                }
+        }
         if (eventName.equals("Click")) {
             if (component.equals(BuyBtn)) {
                 BuyBtn();
                 return true;
 
             }
-
         }
         return false;
 
     }
-
     public void BuyBtn() {
         BuyBtn.Text("Pressed");
     }
-
-    public void JsonSortThingsListView(String jsonString) {
-
-// for loop to sort by pID
-        String Temp1 = "";
-        //Used https://stackoverflow.com/questions/48449004/java-storing-the-output-of-a-for-loop-into-an-array/48449039 and https://www.w3schools.com/java/java_ref_string.asp
-        List<String> jsonIsMySon = new ArrayList<String>();
-        char start = '{';
-        char finish = '}';
-        int e = 0;
-        for (int i = 0; i < jsonString.length(); i++) {
-            char thisChar = jsonString.charAt(i);
-            if (thisChar == start) {
-
-                e = i + 1;
-            } else if ((thisChar == finish)) {
-                String Temp2 = jsonString.substring(e, i);
-
-                if (!(Temp2.contains("]"))) {
-                    if (Temp2.contains("tSoldBy\":\"")) {
-                        jsonIsMySon.add(Temp2);
+    public void jsonSortAndListViewForBuyerScreen(String status, String textOfResponse, String tableName, String fieldName) {
+        List<String> ListViewItemArray;
+        if (status.equals("200")) try {
+            ListViewItemArray = new ArrayList<String>();
+            // See:  https://stackoverflow.com/questions/5015844/parsing-json-object-in-java
+            JSONObject parser = new JSONObject(textOfResponse);
+            if (!parser.getString(tableName).equals("")) {
+                JSONArray jsonIsMySon = parser.getJSONArray(tableName);
+                for (int i = 0; i < jsonIsMySon.length(); i++) {
+                    String oneEntryInTheListView = "";
+                    //add data from table to the sting above by getting the field name you want from the brief ( example where field name is "sellerID": oneEntryInTheListView = jsonIsMySon.getJSONObject(i).getString("sellerID"); )
+                    //formats entries the ListView containing the items in thing table
+                    if (tableName.equals("thing") && fieldName.equals("null")){
+                        oneEntryInTheListView = "[" + jsonIsMySon.getJSONObject(i).getString("tID")
+                                + " : " + jsonIsMySon.getJSONObject(i).getString("tSoldBy")
+                                + "] " + jsonIsMySon.getJSONObject(i).getString("tName")
+                                + " (" + jsonIsMySon.getJSONObject(i).getString("tDescription")
+                                + ") €" + jsonIsMySon.getJSONObject(i).getString("tPrice");
+                        ListViewItemArray.add(oneEntryInTheListView);
+                    }
+                    //formats entries the ListView containing the orders buyer has placed
+                    else if ((tableName.equals("prettyorders") && fieldName.equals("buyerID")) && (Integer.valueOf(jsonIsMySon.getJSONObject(i).getString(fieldName)).equals( Integer.valueOf(pID)))) {
+                        oneEntryInTheListView = "[" + jsonIsMySon.getJSONObject(i).getString("oID")
+                                + "] " + jsonIsMySon.getJSONObject(i).getString("tName")
+                                + " from " + jsonIsMySon.getJSONObject(i).getString("seller")
+                                + " [ tID: " + jsonIsMySon.getJSONObject(i).getString("tID") + " ]";
+                        ListViewItemArray.add(oneEntryInTheListView);
                     }
                 }
+                YailList tempData = YailList.makeList(ListViewItemArray);
+                if (tableName.equals("prettyorders") && fieldName.equals("buyerID")) {
+                    ListView2.Elements(tempData);
+                }
+                if (tableName.equals("thing") && fieldName.equals("null")) {
+                    ListView.Elements(tempData);
+                }
             }
-
+        } catch (JSONException e) {
+            // if an exception occurs, code for it in here
+            notifier.ShowMessageDialog("Error 3.353; JSON Exception (check password) ", "Information", "OK");
         }
-
-//        LBL_AvToOrdr.Text(jsonIsMySon.get(1));
-
-//        String loge = "";
-        //For Loop to Rearrange Data To How I want
-        String Temp3 = "";
-        for (int a = 0; a < jsonIsMySon.size(); a++) {
-//            String tempi="";
-
-            String r1 = jsonIsMySon.get(a).replace("\",\"", "<SPLIT>");
-            String r2 = r1.replace(",", "-");
-//                tempi = r2.replace("*@*", ",");
-
-            String[] keyValueArray = r2.split("<SPLIT>");
-            jsonIsMySon.set(a, "[" + keyValueArray[1] + ":" + keyValueArray[5] + "]" + keyValueArray[2] + "(" + keyValueArray[0] + ")€" + keyValueArray[4]);
-
-
-            if (a == 0) {
-                //Rearrange Json data [0]=tDescription,[1]=tID,[2]=tName,[3]=tPicture,[4]=tPrice,[5]=tSoldBy  logetiddy
-//                String[] keyValueArray = r1.split(",");
-//                jsonIsMySon.set(a,"["+keyValueArray[2]+":"+keyValueArray[6]+"]"+keyValueArray[3]+"("+keyValueArray[1]+")€"+keyValueArray[5]);
-                Temp3 += jsonIsMySon.get(a);
-            } else {
-                //Rearrange Json data [0]=tDescription,[1]=tID,[2]=tName,[3]=tPicture,[4]=tPrice,[5]=tSoldBy  logetiddy
-//                String[] keyValueArray = r1.split(",");
-//                jsonIsMySon.set(a,"["+keyValueArray[1]+":"+keyValueArray[5]+"]"+keyValueArray[2]+"("+keyValueArray[0]+")€"+keyValueArray[4]);
-                Temp3 += "," + jsonIsMySon.get(a);
-            }
+        else {
+            notifier.ShowMessageDialog("Error 3.356; Problem connecting with server", "Information", "OK");
         }
-
-        //Format for use in listView-Remove KeyNames
-        String r2 = Temp3.replace("\":\"", "");
-        String r3 = r2.replace("\"tDescription", "");
-        String r4 = r3.replace("tID", "");
-        String r5 = r4.replace("tName", "");
-        String r6 = r5.replace("tPrice", "");
-        String r7 = r6.replace("tSoldBy", "");
-        String r8 = r7.replace("\"", "");
-
-        ListView.ElementsFromString(r8);
-        ListView.TextColor(COLOR_BLACK);
-        ListView.TextSize(20);
-        ListView.SelectionColor((Color.parseColor("#009F00")));
-        // String y=jsonIsMySon.get(0);
-
-
-
-            ListView2.ElementsFromString(r8);
-            ListView2.TextColor(COLOR_BLACK);
-            ListView2.TextSize(20);
-            ListView2.SelectionColor((Color.parseColor("#009F00")));
     }
 }
