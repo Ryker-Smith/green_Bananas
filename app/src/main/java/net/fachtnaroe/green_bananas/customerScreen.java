@@ -22,7 +22,6 @@ public class customerScreen extends Form implements HandlesEventDispatching {
     private Web Web;
     private ListView ListView;
     private String BaseURL = "https://fachtnaroe.net/bananas?";
-//    pID=LoginScreen.getpID(), Username=LoginScreen.getUsername();
 
 
     protected void $define() {
@@ -41,9 +40,9 @@ public class customerScreen extends Form implements HandlesEventDispatching {
 
         HarrList = new HorizontalArrangement(Screen1);
         HarrList.WidthPercent(100);
-        HarrList.HeightPercent(90);
+        HarrList.HeightPercent(80);
         ListView = new ListView(HarrList);
-        ListView.HeightPercent(100);
+        ListView.HeightPercent(90);
 
         Web = new Web(this);
         Web.Url(BaseURL + "sessionID=a1b2c3d4&entity=thing&method=GET");
@@ -64,8 +63,6 @@ public class customerScreen extends Form implements HandlesEventDispatching {
         BuyBtn.Text("Buy");
         BuyBtn.FontSize(14);
         BuyBtn.TextAlignment(Component.ALIGNMENT_CENTER);
-
-
 
         EventDispatcher.registerEventForDelegation(this, formName, "Click");
         EventDispatcher.registerEventForDelegation(this, "GotTextEvent", "GotText");
@@ -91,7 +88,7 @@ public class customerScreen extends Form implements HandlesEventDispatching {
     }
 
     private void AddtoCartBtn() {
-        AddtoCartBtn.Text("Pressed");
+
 
     }
 
@@ -168,5 +165,6 @@ public class customerScreen extends Form implements HandlesEventDispatching {
 
 
     }
+
 }
 
