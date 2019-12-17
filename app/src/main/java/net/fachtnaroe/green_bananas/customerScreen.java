@@ -36,6 +36,7 @@ public class customerScreen extends Form implements HandlesEventDispatching {
             pID=MainActivity.getPID(),
             username=MainActivity.getUsername();
     private Notifier notifier;
+    private String[] ArrStr;
 
 
     protected void $define() {
@@ -103,7 +104,6 @@ public class customerScreen extends Form implements HandlesEventDispatching {
         Web2.Get();
 
         Web3= new Web(this);
-        Web3.Url(BaseURL+"sessionID=a1b2c3d4&entity=orders&method=POST&tID=");
 
         HarrBuyBtn = new HorizontalArrangement(Screen1);
         HarrBuyBtn.Width(LENGTH_FILL_PARENT);
@@ -156,13 +156,19 @@ public class customerScreen extends Form implements HandlesEventDispatching {
 
                 str = ArrStr[0];
                 ArrStr[0] = str.replace("[","");
-                BuyBtn.Text(ArrStr[0]);
+
+                String str2=ArrStr[1];
+                String[] ArrStr2 = str2.split("]", 5);
+                BuyBtn.Text(ArrStr2[0]);
+
+                Web3.Url(BaseURL+"sessionID=a1b2c3d4&entity=orders&method=POST&tID="+ArrStr[0]+"&sellerID"+ArrStr2[0]+"&slotNum=1&buyerID=15"); //Put in pID after instead of 15.
+                Web3.Get();
             }
         }
 
         else if (eventName.equals("GotText")){
             if (component.equals(Web1)) {
-                Log.w("Check L8r",(String)params[3]);
+                //Log.w("Check L8r",(String)params[3]);
                 //calling the procedure For the ListView containing the Items that are available to buy
                 jsonSortAndListViewForBuyerScreen(params[1].toString(), (String) params[3],"thing", "null");
                 //calling the procedure For the ListView containing the Items that the buyer has ordered
@@ -175,6 +181,9 @@ public class customerScreen extends Form implements HandlesEventDispatching {
                 //ListView.ElementsFromString((String)params[3]);
                 return true;
                }
+            if (component.equals(Web3)){
+                Log.w("CheckL8r",(String)params[3]);
+            }
         }
         else if (eventName.equals("Click")) {
             if (component.equals(BuyBtn)) {
