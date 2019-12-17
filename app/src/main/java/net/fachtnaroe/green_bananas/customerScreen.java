@@ -19,6 +19,8 @@ import com.google.appinventor.components.runtime.util.YailList;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Element;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +30,7 @@ public class customerScreen extends Form implements HandlesEventDispatching {
     private HorizontalArrangement HarrLbl, HarrBuyBtn, HarrList, HarrUser;
     private VerticalArrangement Screen1;
     private Button BuyBtn;
-    private Web Web, Web2;
+    private Web Web1, Web2, Web3;
     private ListView ListViewA, ListViewO;
     private String BaseURL = "https://fachtnaroe.net/bananas?",
             pID=MainActivity.getPID(),
@@ -92,13 +94,16 @@ public class customerScreen extends Form implements HandlesEventDispatching {
         ListViewA.TextColor(COLOR_BLACK);
         ListViewA.SelectionColor(Color.parseColor("#009F00"));
 
-        Web = new Web(this);
-        Web.Url(BaseURL + "sessionID=a1b2c3d4&entity=thing&method=GET");
-        Web.Get();
+        Web1 = new Web(this);
+        Web1.Url(BaseURL + "sessionID=a1b2c3d4&entity=thing&method=GET");
+        Web1.Get();
 
         Web2 = new Web(this);
         Web2.Url(BaseURL + "sessionID=a1b2c3d4&entity=prettyorders&method=GET");
         Web2.Get();
+
+        Web3= new Web(this);
+        Web3.Url(BaseURL+"sessionID=a1b2c3d4&entity=orders&method=POST&tID=");
 
         HarrBuyBtn = new HorizontalArrangement(Screen1);
         HarrBuyBtn.Width(LENGTH_FILL_PARENT);
@@ -112,7 +117,7 @@ public class customerScreen extends Form implements HandlesEventDispatching {
 
         BuyBtn = new Button(HarrBuyBtn);
         BuyBtn.WidthPercent(50);
-        BuyBtn.Text("Buy");
+        //BuyBtn.Text("Buy");
         BuyBtn.FontSize(14);
         BuyBtn.TextAlignment(ALIGNMENT_CENTER);
         BuyBtn.BackgroundColor(00000000);
@@ -136,12 +141,27 @@ public class customerScreen extends Form implements HandlesEventDispatching {
         EventDispatcher.registerEventForDelegation(this, formName, "Click");
 //        EventDispatcher.registerEventForDelegation(this, formName,eventName "Initilize");
         EventDispatcher.registerEventForDelegation(this, "GotTextEvent", "GotText");
+        EventDispatcher.registerEventForDelegation(this, formName, "AfterPicking");
     }
 
     public boolean dispatchEvent(Component component, String componentName, String eventName, Object[] params) {
 
-        if (eventName.equals("GotText")){
-            if (component.equals(Web)) {
+        if (eventName.equals("AfterPicking")){
+            if (component.equals(ListViewA)){
+                //BuyBtn.Text(ListViewA.Selection());
+
+                String str = ListViewA.Selection();
+                String[] ArrStr = str.split(":", 5);
+                //BuyBtn.Text(ArrStr[0]);
+
+                str = ArrStr[0];
+                ArrStr[0] = str.replace("[","");
+                BuyBtn.Text(ArrStr[0]);
+            }
+        }
+
+        else if (eventName.equals("GotText")){
+            if (component.equals(Web1)) {
                 Log.w("Check L8r",(String)params[3]);
                 //calling the procedure For the ListView containing the Items that are available to buy
                 jsonSortAndListViewForBuyerScreen(params[1].toString(), (String) params[3],"thing", "null");
@@ -156,7 +176,7 @@ public class customerScreen extends Form implements HandlesEventDispatching {
                 return true;
                }
         }
-        if (eventName.equals("Click")) {
+        else if (eventName.equals("Click")) {
             if (component.equals(BuyBtn)) {
                 BuyBtn();
                 return true;
@@ -166,7 +186,7 @@ public class customerScreen extends Form implements HandlesEventDispatching {
         return false;
 
     }
-    public void BuyBtn() {
+    public void BuyBtn () {
         BuyBtn.Text("Pressed");
     }
     public void jsonSortAndListViewForBuyerScreen(String status, String textOfResponse, String tableName, String fieldName) {
