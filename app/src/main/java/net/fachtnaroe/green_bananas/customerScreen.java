@@ -29,7 +29,7 @@ public class customerScreen extends Form implements HandlesEventDispatching {
     private VerticalArrangement Screen1;
     private Button BuyBtn;
     private Web Web, Web2;
-    private ListView ListView, ListView2;
+    private ListView ListViewA, ListViewO;
     private String BaseURL = "https://fachtnaroe.net/bananas?",
             pID=MainActivity.getPID(),
             username=MainActivity.getUsername();
@@ -85,12 +85,12 @@ public class customerScreen extends Form implements HandlesEventDispatching {
         HarrList = new HorizontalArrangement(Screen1);
         HarrList.WidthPercent(100);
         HarrList.HeightPercent(50);
-        ListView = new ListView(HarrList);
-        ListView.HeightPercent(100);
-        ListView.Width(Component.LENGTH_FILL_PARENT);
-        ListView.BackgroundColor(00000000);
-        ListView.TextColor(COLOR_BLACK);
-        ListView.SelectionColor(Color.parseColor("#009F00"));
+        ListViewA = new ListView(HarrList);
+        ListViewA.HeightPercent(100);
+        ListViewA.Width(Component.LENGTH_FILL_PARENT);
+        ListViewA.BackgroundColor(00000000);
+        ListViewA.TextColor(COLOR_BLACK);
+        ListViewA.SelectionColor(Color.parseColor("#009F00"));
 
         Web = new Web(this);
         Web.Url(BaseURL + "sessionID=a1b2c3d4&entity=thing&method=GET");
@@ -126,12 +126,12 @@ public class customerScreen extends Form implements HandlesEventDispatching {
         ThingOrder.BackgroundColor((Color.parseColor("#005200")));
         ThingOrder.TextColor(Color.WHITE);
 
-        ListView2 = new ListView(Screen1);
-        ListView2.WidthPercent(100);
-        ListView2.HeightPercent(100);
-        ListView2.BackgroundColor(00000000);
-        ListView2.TextColor(COLOR_BLACK);
-        ListView2.SelectionColor(Color.parseColor("#009F00"));
+        ListViewO = new ListView(Screen1);
+        ListViewO.WidthPercent(100);
+        ListViewO.HeightPercent(100);
+        ListViewO.BackgroundColor(00000000);
+        ListViewO.TextColor(COLOR_BLACK);
+        ListViewO.SelectionColor(Color.parseColor("#009F00"));
 
         EventDispatcher.registerEventForDelegation(this, formName, "Click");
 //        EventDispatcher.registerEventForDelegation(this, formName,eventName "Initilize");
@@ -200,10 +200,10 @@ public class customerScreen extends Form implements HandlesEventDispatching {
                 }
                 YailList tempData = YailList.makeList(ListViewItemArray);
                 if (tableName.equals("prettyorders") && fieldName.equals("buyerID")) {
-                    ListView2.Elements(tempData);
+                    ListViewO.Elements(tempData);
                 }
                 if (tableName.equals("thing") && fieldName.equals("null")) {
-                    ListView.Elements(tempData);
+                    ListViewA.Elements(tempData);
                 }
             }
         } catch (JSONException e) {
