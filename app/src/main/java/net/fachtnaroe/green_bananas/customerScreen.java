@@ -61,12 +61,12 @@ public class customerScreen extends Form implements HandlesEventDispatching {
         UserLbl = new Label(HarrUser);
         UserLbl.WidthPercent(50);
         UserLbl.TextColor(COLOR_BLACK);
-        UserLbl.Text("Username "+ username);
+        UserLbl.Text(username);
         UserLbl.FontSize(14);
         UserLbl.BackgroundColor(00000000);
 
         pIDLbl = new Label(HarrUser);
-        pIDLbl.Text("pID "+pID);
+        pIDLbl.Text(pID);
         pIDLbl.FontSize(14);
         pIDLbl.TextColor(COLOR_BLACK);
         pIDLbl.TextAlignment(ALIGNMENT_OPPOSITE);
@@ -95,6 +95,7 @@ public class customerScreen extends Form implements HandlesEventDispatching {
         Web = new Web(this);
         Web.Url(BaseURL + "sessionID=a1b2c3d4&entity=thing&method=GET");
         Web.Get();
+
         Web2 = new Web(this);
         Web2.Url(BaseURL + "sessionID=a1b2c3d4&entity=prettyorders&method=GET");
         Web2.Get();
@@ -128,7 +129,7 @@ public class customerScreen extends Form implements HandlesEventDispatching {
         ListView2 = new ListView(Screen1);
         ListView2.WidthPercent(100);
         ListView2.HeightPercent(100);
-        ListView2.BackgroundColor(COLOR_WHITE);
+        ListView2.BackgroundColor(00000000);
         ListView2.TextColor(COLOR_BLACK);
         ListView2.SelectionColor(Color.parseColor("#009F00"));
 
@@ -147,13 +148,13 @@ public class customerScreen extends Form implements HandlesEventDispatching {
                 //calling the procedure For the ListView containing the Items that the buyer has ordered
                 return true;
            }
-//            if (component.equals(Web2)) {
-//                //calling the procedure For the ListView containing the Items that the buyer has ordered
-//                jsonSortAndListViewForBuyerScreen(params[1].toString(), (String) params[3],"prettyorders", "buyerID");
-//                //JsonSortThingsListView((String) params[3]);
-//                //ListView.ElementsFromString((String)params[3]);
-//                return true;
-//                }
+            if (component.equals(Web2)) {
+                //calling the procedure For the ListView containing the Items that the buyer has ordered
+                jsonSortAndListViewForBuyerScreen(params[1].toString(), (String) params[3],"prettyorders", "buyerID");
+                //JsonSortThingsListView((String) params[3]);
+                //ListView.ElementsFromString((String)params[3]);
+                return true;
+               }
         }
         if (eventName.equals("Click")) {
             if (component.equals(BuyBtn)) {
@@ -189,7 +190,7 @@ public class customerScreen extends Form implements HandlesEventDispatching {
                         ListViewItemArray.add(oneEntryInTheListView);
                     }
                     //formats entries the ListView containing the orders buyer has placed
-                    else if ((tableName.equals("prettyorders") && fieldName.equals("buyerID")) && (Integer.valueOf(jsonIsMySon.getJSONObject(i).getString(fieldName)).equals( Integer.valueOf(pID)))) {
+                    else if ((tableName.equals("prettyorders") && fieldName.equals("buyerID")) && (Integer.valueOf(jsonIsMySon.getJSONObject(i).getString(fieldName)).equals( Integer.valueOf("15")))) {
                         oneEntryInTheListView = "[" + jsonIsMySon.getJSONObject(i).getString("oID")
                                 + "] " + jsonIsMySon.getJSONObject(i).getString("tName")
                                 + " from " + jsonIsMySon.getJSONObject(i).getString("seller")
