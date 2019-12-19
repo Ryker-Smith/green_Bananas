@@ -64,12 +64,12 @@ public class customerScreen extends Form implements HandlesEventDispatching {
         UserLbl = new Label(HarrUser);
         UserLbl.WidthPercent(50);
         UserLbl.TextColor(COLOR_BLACK);
-        UserLbl.Text(username);
+        UserLbl.Text("Username:"+username);
         UserLbl.FontSize(14);
         UserLbl.BackgroundColor(00000000);
 
         pIDLbl = new Label(HarrUser);
-        pIDLbl.Text(pID);
+        pIDLbl.Text("pID:"+pID);
         pIDLbl.FontSize(14);
         pIDLbl.TextColor(COLOR_BLACK);
         pIDLbl.TextAlignment(ALIGNMENT_OPPOSITE);
