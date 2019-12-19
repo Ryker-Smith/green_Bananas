@@ -19,6 +19,8 @@ import com.google.appinventor.components.runtime.util.YailList;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Element;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,12 +30,13 @@ public class customerScreen extends Form implements HandlesEventDispatching {
     private HorizontalArrangement HarrLbl, HarrBuyBtn, HarrList, HarrUser;
     private VerticalArrangement Screen1;
     private Button BuyBtn;
-    private Web Web, Web2;
-    private ListView ListView, ListO;
+    private Web Web1, Web2, Web3, Web4;
+    private ListView ListViewA, ListViewO;
     private String BaseURL = "https://fachtnaroe.net/bananas?",
             pID=MainActivity.getPID(),
             username=MainActivity.getUsername();
     private Notifier notifier;
+    private String[] ArrStr;
 
 
     protected void $define() {
@@ -85,28 +88,20 @@ public class customerScreen extends Form implements HandlesEventDispatching {
         HarrList = new HorizontalArrangement(Screen1);
         HarrList.WidthPercent(100);
         HarrList.HeightPercent(50);
-        ListView = new ListView(HarrList);
-        ListView.HeightPercent(100);
-        ListView.Width(Component.LENGTH_FILL_PARENT);
-        ListView.BackgroundColor(00000000);
-        ListView.TextColor(COLOR_BLACK);
-        ListView.SelectionColor(Color.parseColor("#009F00"));
-
-        Web = new Web(this);
-        Web.Url(BaseURL + "sessionID=a1b2c3d4&entity=thing&method=GET");
-        Web.Get();
-
-        Web2 = new Web(this);
-        Web2.Url(BaseURL + "sessionID=a1b2c3d4&entity=prettyorders&method=GET");
-        Web2.Get();
+        ListViewA = new ListView(HarrList);
+        ListViewA.HeightPercent(100);
+        ListViewA.Width(Component.LENGTH_FILL_PARENT);
+        ListViewA.BackgroundColor(00000000);
+        ListViewA.TextColor(COLOR_BLACK);
+        ListViewA.SelectionColor(Color.parseColor("#009F00"));
 
         HarrBuyBtn = new HorizontalArrangement(Screen1);
         HarrBuyBtn.Width(LENGTH_FILL_PARENT);
         HarrBuyBtn.HeightPercent(10);
         CreditLbl = new Label(HarrBuyBtn);
         CreditLbl.WidthPercent(50);
-        CreditLbl.Text("Credit €");
         CreditLbl.FontSize(20);
+        CreditLbl.TextColor(COLOR_BLACK);
         CreditLbl.TextAlignment(ALIGNMENT_NORMAL);
         CreditLbl.BackgroundColor(00000000);
 
@@ -126,37 +121,88 @@ public class customerScreen extends Form implements HandlesEventDispatching {
         ThingOrder.BackgroundColor((Color.parseColor("#005200")));
         ThingOrder.TextColor(Color.WHITE);
 
-        ListO = new ListView(Screen1);
-        ListO.WidthPercent(100);
-        ListO.HeightPercent(100);
-        ListO.BackgroundColor(00000000);
-        ListO.TextColor(COLOR_BLACK);
-        ListO.SelectionColor(Color.parseColor("#009F00"));
+        ListViewO = new ListView(Screen1);
+        ListViewO.WidthPercent(100);
+        ListViewO.HeightPercent(100);
+        ListViewO.BackgroundColor(00000000);
+        ListViewO.TextColor(COLOR_BLACK);
+        ListViewO.SelectionColor(Color.parseColor("#009F00"));
+
+        Web1 = new Web(this);
+        Web1.Url(BaseURL + "sessionID=a1b2c3d4&entity=thing&method=GET");
+        Web1.Get();
+
+        Web2 = new Web(this);
+        Web2.Url(BaseURL + "sessionID=a1b2c3d4&entity=prettyorders&method=GET");
+        Web2.Get();
+
+        Web3= new Web(this);
+
+        Web4= new Web(this);
+        Web4.Url(BaseURL+ "sessionID=a1b2c3d4&entity=person&method=GET&pID=15");//Loose the 15 add pId=+ pID
+        Web4.Get();
 
         EventDispatcher.registerEventForDelegation(this, formName, "Click");
 //        EventDispatcher.registerEventForDelegation(this, formName,eventName "Initilize");
         EventDispatcher.registerEventForDelegation(this, "GotTextEvent", "GotText");
+        EventDispatcher.registerEventForDelegation(this, formName, "AfterPicking");
     }
 
     public boolean dispatchEvent(Component component, String componentName, String eventName, Object[] params) {
 
-        if (eventName.equals("GotText")){
-            if (component.equals(Web)) {
-                Log.w("Check L8r",(String)params[3]);
+        if (eventName.equals("AfterPicking")){
+            if (component.equals(ListViewA)){
+                //BuyBtn.Text(ListViewA.Selection());
+
+                String str = ListViewA.Selection();
+                String[] ArrStr = str.split(" : ", 5);
+                //BuyBtn.Text(ArrStr[0]);
+
+                str =ArrStr[0];
+                ArrStr[0] = str.replace("[","");
+
+                String str2=ArrStr[1];
+                String[] ArrStr2 = str2.split("]", 5);
+                //BuyBtn.Text(ArrStr2[0]);
+
+
+                Web3.Url(BaseURL+"sessionID=a1b2c3d4&entity=orders&method=POST&tID="+ArrStr[0]+"&sellerID"+ArrStr2[0]+"&slotNum=1&buyerID=15"); //Put in pID after instead of 15.
+                Web3.Get();
+//                String test=(BaseURL+"sessionID=a1b2c3d4&entity=orders&method=POST&tID="+ArrStr[0]+"&sellerID"+ArrStr2[0]+"&slotNum=1&buyerID=15").trim();
+//                FoodLbl.Text(test);
+//                Log.w("URL",test);
+            }
+        }
+
+        else if (eventName.equals("GotText")){
+            if (component.equals(Web1)) {
+                //Log.w("Check L8r",(String)params[3]);
                 //calling the procedure For the ListView containing the Items that are available to buy
                 jsonSortAndListViewForBuyerScreen(params[1].toString(), (String) params[3],"thing", "null");
                 //calling the procedure For the ListView containing the Items that the buyer has ordered
                 return true;
            }
-            if (component.equals(Web2)) {
+            else if (component.equals(Web2)) {
                 //calling the procedure For the ListView containing the Items that the buyer has ordered
                 jsonSortAndListViewForBuyerScreen(params[1].toString(), (String) params[3],"prettyorders", "buyerID");
                 //JsonSortThingsListView((String) params[3]);
                 //ListView.ElementsFromString((String)params[3]);
                 return true;
                }
+            else if (component.equals(Web3)){
+                Log.w("CheckL8r",(String)params[3]);
+                FoodLbl.Text(params[1].toString()+" "+ params[3].toString());
+                return true;
+            }
+            else if (component.equals(Web4)){
+                Log.w("CheckL8r",(String)params[3]);
+                //calling procedure to show credit amount
+                jsonSortAndListViewForBuyerScreen(params[1].toString(), (String) params[3],"person", "Credit");
+                return true;
+            }
+            return true;
         }
-        if (eventName.equals("Click")) {
+        else if (eventName.equals("Click")) {
             if (component.equals(BuyBtn)) {
                 BuyBtn();
                 return true;
@@ -166,7 +212,7 @@ public class customerScreen extends Form implements HandlesEventDispatching {
         return false;
 
     }
-    public void BuyBtn() {
+    public void BuyBtn () {
         BuyBtn.Text("Pressed");
     }
     public void jsonSortAndListViewForBuyerScreen(String status, String textOfResponse, String tableName, String fieldName) {
@@ -181,6 +227,10 @@ public class customerScreen extends Form implements HandlesEventDispatching {
                     String oneEntryInTheListView = "";
                     //add data from table to the sting above by getting the field name you want from the brief ( example where field name is "sellerID": oneEntryInTheListView = jsonIsMySon.getJSONObject(i).getString("sellerID"); )
                     //formats entries the ListView containing the items in thing table
+                    if(tableName.equals("person") && fieldName.equals("Credit")){
+                        oneEntryInTheListView = jsonIsMySon.getJSONObject(i).getString("Credit");
+                        ListViewItemArray.add(oneEntryInTheListView);
+                    }
                     if (tableName.equals("thing") && fieldName.equals("null")){
                         oneEntryInTheListView = "[" + jsonIsMySon.getJSONObject(i).getString("tID")
                                 + " : " + jsonIsMySon.getJSONObject(i).getString("tSoldBy")
@@ -190,7 +240,7 @@ public class customerScreen extends Form implements HandlesEventDispatching {
                         ListViewItemArray.add(oneEntryInTheListView);
                     }
                     //formats entries the ListView containing the orders buyer has placed
-                    else if ((tableName.equals("prettyorders") && fieldName.equals("buyerID")) && (Integer.valueOf(jsonIsMySon.getJSONObject(i).getString(fieldName)).equals( Integer.valueOf("15")))) {
+                    else if ((tableName.equals("prettyorders") && fieldName.equals("buyerID")) && (Integer.valueOf(jsonIsMySon.getJSONObject(i).getString(fieldName)).equals( Integer.valueOf("15")))) { // change 15 to pID
                         oneEntryInTheListView = "[" + jsonIsMySon.getJSONObject(i).getString("oID")
                                 + "] " + jsonIsMySon.getJSONObject(i).getString("tName")
                                 + " from " + jsonIsMySon.getJSONObject(i).getString("seller")
@@ -199,11 +249,14 @@ public class customerScreen extends Form implements HandlesEventDispatching {
                     }
                 }
                 YailList tempData = YailList.makeList(ListViewItemArray);
+                if(tableName.equals("person") && fieldName.equals("Credit")){
+                    CreditLbl.Text("Credit:€" + tempData.get(1));
+                }
                 if (tableName.equals("prettyorders") && fieldName.equals("buyerID")) {
-                    ListO.Elements(tempData);
+                    ListViewO.Elements(tempData);
                 }
                 if (tableName.equals("thing") && fieldName.equals("null")) {
-                    ListView.Elements(tempData);
+                    ListViewA.Elements(tempData);
                 }
             }
         } catch (JSONException e) {
