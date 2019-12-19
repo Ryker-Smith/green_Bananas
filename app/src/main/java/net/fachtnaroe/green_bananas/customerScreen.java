@@ -95,8 +95,6 @@ public class customerScreen extends Form implements HandlesEventDispatching {
         ListViewA.TextColor(COLOR_BLACK);
         ListViewA.SelectionColor(Color.parseColor("#009F00"));
 
-
-
         HarrBuyBtn = new HorizontalArrangement(Screen1);
         HarrBuyBtn.Width(LENGTH_FILL_PARENT);
         HarrBuyBtn.HeightPercent(10);
@@ -157,18 +155,22 @@ public class customerScreen extends Form implements HandlesEventDispatching {
                 //BuyBtn.Text(ListViewA.Selection());
 
                 String str = ListViewA.Selection();
-                String[] ArrStr = str.split(":", 5);
+                String[] ArrStr = str.split(" : ", 5);
                 //BuyBtn.Text(ArrStr[0]);
 
-                str = ArrStr[0];
+                str =ArrStr[0];
                 ArrStr[0] = str.replace("[","");
 
                 String str2=ArrStr[1];
                 String[] ArrStr2 = str2.split("]", 5);
                 //BuyBtn.Text(ArrStr2[0]);
 
+
                 Web3.Url(BaseURL+"sessionID=a1b2c3d4&entity=orders&method=POST&tID="+ArrStr[0]+"&sellerID"+ArrStr2[0]+"&slotNum=1&buyerID=15"); //Put in pID after instead of 15.
                 Web3.Get();
+//                String test=(BaseURL+"sessionID=a1b2c3d4&entity=orders&method=POST&tID="+ArrStr[0]+"&sellerID"+ArrStr2[0]+"&slotNum=1&buyerID=15").trim();
+//                FoodLbl.Text(test);
+//                Log.w("URL",test);
             }
         }
 
