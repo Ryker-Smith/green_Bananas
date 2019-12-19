@@ -1,7 +1,5 @@
 package net.fachtnaroe.green_bananas;
 
-import android.content.Intent;
-
 import com.google.appinventor.components.runtime.Button;
 import com.google.appinventor.components.runtime.CheckBox;
 import com.google.appinventor.components.runtime.Component;
@@ -10,198 +8,180 @@ import com.google.appinventor.components.runtime.Form;
 import com.google.appinventor.components.runtime.HandlesEventDispatching;
 import com.google.appinventor.components.runtime.HorizontalArrangement;
 import com.google.appinventor.components.runtime.Label;
+import com.google.appinventor.components.runtime.Notifier;
 import com.google.appinventor.components.runtime.PasswordTextBox;
 import com.google.appinventor.components.runtime.TextBox;
-import com.google.appinventor.components.runtime.VerticalScrollArrangement;
+import com.google.appinventor.components.runtime.VerticalArrangement;
 import com.google.appinventor.components.runtime.Web;
-import com.google.appinventor.components.runtime.Notifier;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class MainActivity extends Form implements HandlesEventDispatching {
 
-
-    private Label title, UserL, PasswL, debugLabel, debugLabel2;
+    private Label title, UserL, PasswL;
     private TextBox username;
     private PasswordTextBox password;
     private CheckBox buyer, seller;
     private Button login;
-    private VerticalScrollArrangement vsaTheScreen;
-    private HorizontalArrangement Harr1, Harr2, Harr3;
-    private String weblogin = "https://fachtnaroe.net/bananas?cmd=LOGIN&user=",
-            webLogin2 = "&pass=";
+    private VerticalArrangement Vertical;
+    private HorizontalArrangement Harr_EmptySpaceAfterTitle, Harr_UserInfo, Harr_Password, Harr_Checkboxes, H1_EmptySpaceBefore, H2_EmptySpaceAfter, Harr_EmptySpaceBeforeLoginBtn;
+    private String passwordForURL = "", weblogin = "https://fachtnaroe.net/bananas?cmd=LOGIN&user=", webLogin2 = "&pass=", usernameForURL = "", SessionId = "", pID = "";
     private Web webLoginConnection;
-    private Notifier notifier;
-    private boolean ResponseContent;
-    private String weh;
-    private static String Suser="",
-            SessionId="",
-            pID="";
+    private Notifier GotTextNotifier;
 
     protected void $define() {
+        this.BackgroundColor(Component.COLOR_ORANGE);
 
         webLoginConnection = new Web(this);
-        this.BackgroundColor(COLOR_ORANGE);
-        notifier = new Notifier(this);
-        vsaTheScreen = new VerticalScrollArrangement(this);
-        vsaTheScreen.Width(Component.LENGTH_FILL_PARENT);
-        vsaTheScreen.Height(Component.LENGTH_FILL_PARENT);
-        vsaTheScreen.BackgroundColor(Component.COLOR_ORANGE);
-        vsaTheScreen.Image("FDS_PossibleLogo_03.png");
-        notifier.BackgroundColor(Component.COLOR_RED);
-        notifier.TextColor(Component.COLOR_WHITE);
-        title = new Label(vsaTheScreen);
-        title.Width(Component.LENGTH_FILL_PARENT);
+
+        GotTextNotifier = new Notifier(this);
+        GotTextNotifier.BackgroundColor(Component.COLOR_RED);
+        GotTextNotifier.TextColor(Component.COLOR_WHITE);
+
+        Vertical = new VerticalArrangement(this);
+        Vertical.Height(LENGTH_FILL_PARENT);
+        Vertical.Width(LENGTH_FILL_PARENT);
+        Vertical.Image("FDS_PossibleLogo_03.png");
+
+        title = new Label(Vertical);
+        title.Width(LENGTH_FILL_PARENT);
         title.Text("Food Delivery Service");
-        title.FontSize(50);
+        title.TextColor(COLOR_BLACK);
         title.FontBold(true);
+        title.FontSize(36);
         title.TextAlignment(Component.ALIGNMENT_CENTER);
 
-        Harr1 = new HorizontalArrangement(vsaTheScreen);
-        Harr1.Width(Component.LENGTH_FILL_PARENT);
-        Harr1.HeightPercent(15);
-        UserL = new Label(Harr1);
-        UserL.Text("Username");
-        UserL.WidthPercent(20);
-        username = new TextBox(Harr1);
-        username.Width(Component.LENGTH_FILL_PARENT);
-        username.Text("greenshop");
+        Harr_EmptySpaceAfterTitle = new HorizontalArrangement(Vertical);
+        Harr_EmptySpaceAfterTitle.Height(LENGTH_FILL_PARENT);
 
-        Harr2 = new HorizontalArrangement(vsaTheScreen);
-        Harr2.Width(Component.LENGTH_FILL_PARENT);
-        Harr2.HeightPercent(15);
-        PasswL = new Label(Harr2);
-        PasswL.WidthPercent(20);
-        PasswL.Text("Password");
-        password = new PasswordTextBox(Harr2);
-        password.Width(Component.LENGTH_FILL_PARENT);
-        password.Text("tcfetcfe");
+        Harr_UserInfo = new HorizontalArrangement(Vertical);
+        Harr_UserInfo.Width(LENGTH_FILL_PARENT);
+        Harr_UserInfo.HeightPercent(13);
 
-        debugLabel = new Label(vsaTheScreen);
-        debugLabel.Width(Component.LENGTH_FILL_PARENT);
-        debugLabel.HeightPercent(10);
-        debugLabel.Text();
+        UserL = new Label(Harr_UserInfo);
+        UserL.Text("Username: ");
+        UserL.WidthPercent(30);
+        UserL.TextAlignment(ALIGNMENT_OPPOSITE);
 
-        debugLabel2 = new Label(vsaTheScreen);
-        debugLabel2.Width(Component.LENGTH_FILL_PARENT);
-        debugLabel2.HeightPercent(10);
+        username = new TextBox(Harr_UserInfo);
+        username.Width(LENGTH_FILL_PARENT);
+        username.BackgroundColor(00000000);
 
-        Harr3 = new HorizontalArrangement(vsaTheScreen);
-        Harr3.Width(Component.LENGTH_FILL_PARENT);
-        Harr3.HeightPercent(10);
-        Harr3.AlignHorizontal(Component.ALIGNMENT_CENTER);
-        buyer = new CheckBox(Harr3);
-        buyer.Text("Buyer");
-        buyer.Width(Component.LENGTH_FILL_PARENT);
-        buyer.FontBold(true);
+        Harr_Password = new HorizontalArrangement(Vertical);
+        Harr_Password.Width(LENGTH_FILL_PARENT);
+        Harr_Password.HeightPercent(15);
+
+        PasswL = new Label(Harr_Password);
+        PasswL.WidthPercent(30);
+        PasswL.Text("Password: ");
+        PasswL.TextColor(COLOR_BLACK);
+        PasswL.TextAlignment(ALIGNMENT_OPPOSITE);
+
+
+        password = new PasswordTextBox(Harr_Password);
+        password.Width(LENGTH_FILL_PARENT);
+        password.BackgroundColor(00000000);
+
+        Harr_Checkboxes = new HorizontalArrangement(Vertical);
+        Harr_Checkboxes.Width(LENGTH_FILL_PARENT);
+        Harr_Checkboxes.HeightPercent(20);
+
+        //Space to left of checkboxes so they appear centered
+        H1_EmptySpaceBefore = new HorizontalArrangement(Harr_Checkboxes);
+        H1_EmptySpaceBefore.WidthPercent(20);
+
+        buyer = new CheckBox(Harr_Checkboxes);
         buyer.Checked(true);
-        seller = new CheckBox(Harr3);
+        buyer.Text("Buyer");
+        buyer.TextColor(COLOR_BLACK);
+        buyer.FontSize(25);
+        buyer.Width(LENGTH_FILL_PARENT);
+
+        seller = new CheckBox(Harr_Checkboxes);
         seller.Text("Seller");
-        seller.FontBold(true);
-        seller.Width(Component.LENGTH_FILL_PARENT);
+        seller.TextColor(COLOR_BLACK);
+        seller.FontSize(25);
         seller.Checked(false);
 
-        login = new Button(vsaTheScreen);
-        login.Width(Component.LENGTH_FILL_PARENT);
-        login.HeightPercent(15);
-        login.Text("Log In");
+        //Space to right of checkboxes so they appear centered
+        H2_EmptySpaceAfter = new HorizontalArrangement(Harr_Checkboxes);
+        H2_EmptySpaceAfter.WidthPercent(20);
+
+        Harr_EmptySpaceBeforeLoginBtn = new HorizontalArrangement(Vertical);
+        Harr_EmptySpaceBeforeLoginBtn.Height(LENGTH_FILL_PARENT);
+
+        login = new Button(Vertical);
+        login.Width(LENGTH_FILL_PARENT);
+        login.HeightPercent(20);
+        login.Text("Login");
         login.FontSize(25);
         login.TextAlignment(Component.ALIGNMENT_CENTER);
         login.BackgroundColor(Component.COLOR_NONE);
+        login.FontBold(true);
+
         EventDispatcher.registerEventForDelegation(this, formName, "Click");
         EventDispatcher.registerEventForDelegation(this, formName, "GotText");
-        EventDispatcher.registerEventForDelegation(this, formName, "Changed");
+        EventDispatcher.registerEventForDelegation(this, "ChangedEvent", "Changed");
     }
 
-    public boolean dispatchEvent(Component component, String componentName, String eventName, Object[] params)
-    {
+    public boolean dispatchEvent(Component component, String componentName, String eventName, Object[] params) {
         if (eventName.equals("Click")) {
             if (component.equals(login)) {
-                loginBtnClick();
+                if (!(username.Text().equals("")||password.Text().equals(""))) {
+                    loginBtnClick();
+                }
+                else {GotTextNotifier.ShowAlert("Username or Password Not Entered");}
                 return true;
             }
         }
-        else if (eventName.equals("Changed")) {
+        else  if (eventName.equals("Changed")) {
             if (component.equals(buyer)) {
-                seller.Checked(!buyer.Checked());
+                seller.Checked( !buyer.Checked() );
                 return true;
             }
-            else if (component.equals(seller) ) {
+            else if (component.equals(seller)) {
                 buyer.Checked(!seller.Checked());
                 return true;
             }
         }
-        else if(eventName.equals("GotText")){
-            sortJsonDeet(params);
-            loginResult(params);
+        else if (eventName.equals("GotText")) {
+            jsonLoginCheckAndValuePasser(params[1].toString(),params[3].toString());
             return true;
         }
         return false;
     }
-
+    //send the login details to backend
     public void loginBtnClick() {
-        webLoginConnection.Url(weblogin + username.Text() + webLogin2 + password.Text());
+        usernameForURL = username.Text();
+        passwordForURL = password.Text();
+        webLoginConnection.Url(weblogin + usernameForURL + webLogin2 + passwordForURL);
         webLoginConnection.Get();
-
-        if (buyer.Checked()) {
-            notifier.LogInfo("OK");
-            openBuyer();
+    }
+    //after GotText check the login and change screens
+    public void jsonLoginCheckAndValuePasser(String status, String textOfResponse) {
+        if (status.equals("200")) try {
+            // See:  https://stackoverflow.com/questions/5015844/parsing-json-object-in-java
+            JSONObject parser = new JSONObject(textOfResponse);
+            String status_json = parser.getString("Status");
+            if(status_json.contains("OK")){
+                pID = parser.getString("pID");
+                SessionId = parser.getString("sessionID");
+                if (seller.Checked()) {
+                    switchFormWithStartValue("Sales","<SPLIT>"+pID+"<SPLIT>"+usernameForURL+"<SPLIT>"+SessionId+"<SPLIT>");
+                }
+                else {
+                    switchFormWithStartValue("Order","<SPLIT>"+pID+"<SPLIT>"+usernameForURL+"<SPLIT>"+SessionId+"<SPLIT>");
+                }
+            }
+            else{
+                GotTextNotifier.ShowAlert("Login Failed: Username or Password Incorrect");
+            }
+        } catch (JSONException e) {
+            // if an exception occurs, code for it in here
+            GotTextNotifier.ShowMessageDialog("Error 3.353; JSON Exception (check password) ", "Information", "OK");
         }
-
-        if (seller.Checked()) {
-            notifier.LogInfo("OK");
-            openSeller();
+        else {
+            GotTextNotifier.ShowMessageDialog("Error 3.356; Problem connecting with server", "Information", "OK");
         }
-    }
-
-    public void openBuyer() {
-        //switchFormWithStartValue("MainActivity", null);
-        //switchForm("customerScreen");
-        Intent i = new Intent(getApplicationContext(),customerScreen.class);
-        startActivity(i);
-    }
-
-    public void openSeller() {
-        //switchFormWithStartValue("MainActivity", null);
-        //switchForm("sellerScreen");
-        Intent i = new Intent(getApplicationContext(),sellerScreen.class);
-        startActivity(i);
-    }
-
-    public void loginResult(Object[] params) {
-        debugLabel.Text((String) params[3]);
-        weh = (String) params[3];
-        ResponseContent = weh.contains("OK");
-        if (ResponseContent) {
-            notifier.ShowAlert("OK");
-        } else {
-            notifier.ShowAlert("Error");
-        }
-
-    }
-
-    public void checkChange1() {
-        seller.Checked(false);
-
-    }
-
-    public void checkChange2() {
-        buyer.Checked(false);
-
-    }
-
-    public void sortJsonDeet(Object[] params){
-        String jsonString = (String)params[3];
-        int sessionIDFirstChar =(jsonString.indexOf("sessionID"))+12;
-        int pID_FirstChar = (jsonString.indexOf("pID"))+8;
-        SessionId=jsonString.substring(sessionIDFirstChar,sessionIDFirstChar+8);
-        pID=jsonString.substring(pID_FirstChar,pID_FirstChar+2);
-    }
-    public static String getUsername(){
-        return Suser;
-    }
-    public static String getSessionID(){
-        return SessionId;
-    }
-    public static String getPID(){
-        return pID;
     }
 }
