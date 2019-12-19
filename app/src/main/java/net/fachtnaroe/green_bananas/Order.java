@@ -57,7 +57,7 @@ public class Order extends Form implements HandlesEventDispatching {
 
         LblUsername = new Label(HorizonUserInformation);
         LblUsername.FontSize(15);
-        LblUsername.Text("Username:");
+        LblUsername.Text("Username:"+ startValue[2]);
         LblUsername.TextColor(Component.COLOR_BLACK);
 
         LblTextbox = new Label(HorizonUserInformation);
@@ -69,7 +69,7 @@ public class Order extends Form implements HandlesEventDispatching {
 
         LblpID = new Label(HorizonUserInformation);
         LblpID.FontSize(15);
-        LblpID.Text("pID:");
+        LblpID.Text("pID:"+ startValue[1]);
         LblpID.TextColor(Component.COLOR_BLACK);
 
         LbleTextboxpID = new Label(HorizonUserInformation);

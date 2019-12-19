@@ -32,16 +32,16 @@ public class customerScreen extends Form implements HandlesEventDispatching {
     private Button BuyBtn;
     private Web Web1, Web2, Web3, Web4;
     private ListView ListViewA, ListViewO;
-    private String BaseURL = "https://fachtnaroe.net/bananas?",
-            pID=MainActivity.getPID(),
-            username=MainActivity.getUsername();
+    private String BaseURL = "https://fachtnaroe.net/bananas?";
     private Notifier notifier;
-    private String[] ArrStr;
+    private String[] ArrStr,startvalue;
 
 
     protected void $define() {
         Screen1 = new VerticalArrangement(this);
         this.BackgroundColor(COLOR_ORANGE);
+        //Starvalue[1]=pid// startvalue[2]=username// startvalue[3]=sessionID
+        startvalue=this.startupValue.split("<SPLIT>");
         Screen1.Width(Component.LENGTH_FILL_PARENT);
         Screen1.Height(Component.LENGTH_FILL_PARENT);
         Screen1.BackgroundColor(Component.COLOR_ORANGE);
@@ -64,12 +64,12 @@ public class customerScreen extends Form implements HandlesEventDispatching {
         UserLbl = new Label(HarrUser);
         UserLbl.WidthPercent(50);
         UserLbl.TextColor(COLOR_BLACK);
-        UserLbl.Text("Username:"+username);
+        UserLbl.Text("Username:"+startvalue[2]);
         UserLbl.FontSize(14);
         UserLbl.BackgroundColor(00000000);
 
         pIDLbl = new Label(HarrUser);
-        pIDLbl.Text("pID:"+pID);
+        pIDLbl.Text("pID:"+startvalue[1]);
         pIDLbl.FontSize(14);
         pIDLbl.TextColor(COLOR_BLACK);
         pIDLbl.TextAlignment(ALIGNMENT_OPPOSITE);
